@@ -49,6 +49,8 @@
 
 #include <fmt/format.h>
 
+#include <opm/simulators/linalg/HaugenLabs.h>
+
 namespace Opm {
 
 /// A model implementation for three-phase black oil.
@@ -353,6 +355,8 @@ private:
     Scalar maxResidualAllowed() const { return param_.max_residual_allowed_; }
     double linear_solve_setup_time_;
     std::vector<bool> wasSwitched_;
+
+    bsr_matrix *bsr_jacobian_; // HaugenLabs matrix object
 };
 
 } // namespace Opm
