@@ -430,6 +430,20 @@ struct StandardPreconditioners {
     }
 };
 
+
+template <class X, class Y>
+class TrivialPreconditioner : public Dune::PreconditionerWithUpdate<X, Y>
+{
+    public:
+    TrivialPreconditioner(){};
+    virtual void update() override {};
+    virtual bool hasPerfectUpdate() const override {return true;}
+    virtual void pre (X& x, Y& y) override {};
+    virtual void post (X& x) override {};
+    virtual void apply (X& x, const Y& y) override {};
+};
+
+
 template <class Operator>
 struct StandardPreconditioners<Operator, Dune::Amg::SequentialInformation> {
     static void add()
@@ -467,6 +481,10 @@ struct StandardPreconditioners<Operator, Dune::Amg::SequentialInformation> {
         F::addCreator("DILU", [](const O& op, const P& prm, const std::function<V()>&, std::size_t) {
             DUNE_UNUSED_PARAMETER(prm);
             return std::make_shared<MultithreadDILU<M, V, V>>(op.getmat());
+        });
+        F::addCreator("trivial", [](const O& op, const P& prm, const std::function<V()>&, std::size_t) {
+            DUNE_UNUSED_PARAMETER(prm);
+            return std::make_shared<TrivialPreconditioner<V,V>>();
         });
         F::addCreator("Jac", [](const O& op, const P& prm, const std::function<V()>&, std::size_t) {
             const int n = prm.get<int>("repeats", 1);
