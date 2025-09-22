@@ -535,7 +535,7 @@ solveJacobianSystem(BVector& x)
 
         Dune::Timer perfTimer;
         perfTimer.start();
-
+/*
         if(bsr_jacobian_->nnz==0)
         {
             int nrows = jacobian.N();
@@ -571,6 +571,7 @@ solveJacobianSystem(BVector& x)
             //y_ = (double*) malloc(b*nrows*sizeof(double));
 
         }
+*/
 /*
         else
         {
