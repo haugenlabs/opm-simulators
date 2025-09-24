@@ -95,8 +95,8 @@ class MixedSolver : public InverseOperator<X,X>
         }
 
         // print select information
-        bsr_info(jacobian_);
-        bsr_sparsity(jacobian_,"jacobian");
+        //bsr_info(jacobian_);
+        //bsr_sparsity(jacobian_,"jacobian");
 
         // allocate and intialize solver memory
         mem_ =bslv_new();
@@ -129,7 +129,7 @@ class MixedSolver : public InverseOperator<X,X>
         //bslv_info(mem_,count);
 
         // return convergence information
-        res.converged  = 1;
+        res.converged  = (mem_->e[count] < mem_->tol);
         res.reduction  = mem_->e[count];
         res.iterations = count;
         //getchar();
