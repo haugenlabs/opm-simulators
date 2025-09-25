@@ -441,6 +441,7 @@ class TrivialPreconditioner : public Dune::PreconditionerWithUpdate<X, Y>
     virtual void pre (X& x, Y& y) override {};
     virtual void post (X& x) override {};
     virtual void apply (X& x, const Y& y) override {};
+    virtual Dune::SolverCategory::Category category() const override { return Dune::SolverCategory::sequential; };
 };
 
 
