@@ -45,8 +45,9 @@
 #endif
 #endif
 
-#include <opm/simulators/linalg/mixed/HaugenLabs.h>
+//#include <opm/simulators/linalg/mixed/HaugenLabs.h>
 #include <opm/simulators/linalg/mixed/bsr.h>
+#include <opm/simulators/linalg/mixed/bslv.h>
 
 namespace Dune
 {
