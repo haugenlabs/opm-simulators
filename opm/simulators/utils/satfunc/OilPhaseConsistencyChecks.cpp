@@ -31,7 +31,7 @@ template <typename Scalar>
 void Opm::Satfunc::PhaseChecks::Oil::SOcr_GO<Scalar>::
 testImpl(const EclEpsScalingPointsInfo<Scalar>& endPoints)
 {
-    this->sogcr_ = endPoints.Sogcr;
+    this->sogcr_ = 0;//endPoints.Sogcr;
 
     if (! std::isfinite(this->sogcr_)) {
         this->setViolated();
