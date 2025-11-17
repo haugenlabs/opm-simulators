@@ -82,6 +82,48 @@ void bslv_init(bslv_memory *mem, double tol, int max_iter, bsr_matrix const *A, 
  * @param b Second input vector.
  * @param n Vector length.
  */
+double __attribute__((noinline)) vec_inner0(const double *a, const double *b, int n)
+{
+    const double *x = __builtin_assume_aligned(a,64);
+    const double *y = __builtin_assume_aligned(b,64);
+
+/*
+    double sum=0.0;
+    for(int i=0;i<n;i++)
+    {
+        sum += x[i]*y[i];
+    }
+    return sum;
+*/
+/*
+    // Inner product with Kahan compensated summation
+    double sum = 0.0;
+    double c = 0.0;
+    for(int i=0;i<n;i++)
+    {
+        double u = x[i]*y[i] - c;
+        double t = sum + u;
+        c = (t - sum) - u;
+        sum = t;
+    }
+    return sum;
+*/
+
+    // Inner product with Kahan-Babuska compensated summation
+    double sum = 0.0;
+    double   c = 0.0;
+
+    for(int i=0;i<n;i++)
+    {
+        double u = x[i]*y[i];
+        double t = sum + u;
+        c += (fabs(sum) >= fabs(u)) ? (sum - t) + u : (u - t) + sum;
+        sum = t;
+    }
+    return sum + c;
+}
+
+
 double __attribute__((noinline)) vec_inner2(const double *a, const double *b, int n)
 {
     const double *x = __builtin_assume_aligned(a,64);
